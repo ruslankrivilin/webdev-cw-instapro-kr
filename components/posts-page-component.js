@@ -1,7 +1,7 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage, getToken, user, formatDate } from "../index.js";
-import { switchesLike } from "../switchesLike.js";
+
 
 export function renderPostsPageComponent({ appEl }) {
 
@@ -84,7 +84,7 @@ export function renderPostsPageComponent({ appEl }) {
         token: getToken(),
         img: userEl.querySelector('img'),
       }
-      switchesLike(sentData);
+
     });
   }
 }

@@ -1,10 +1,9 @@
-import { USER_POSTS_PAGE } from "../routes.js";
+import { USER_POSTS_PAGE, LOADING_PAGE, POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage, getToken, user, formatDate } from "../index.js";
-
+import { likeApi, dislikeApi } from "../api.js";
 
 export function renderPostsPageComponent({ appEl }) {
-
   const appHtml = `
               <div class="page-container">
               <div class="header-container"></div>
@@ -59,6 +58,7 @@ export function renderPostsPageComponent({ appEl }) {
       </li>
     `;
     postsHTML.innerHTML += postHTML;
+    
   });
 
   renderHeaderComponent({
@@ -73,20 +73,48 @@ export function renderPostsPageComponent({ appEl }) {
     });
   }
 
-  for (let userEl of document.querySelectorAll(".like-button")) {
-    userEl.addEventListener("click", () => {
-      userEl.classList.add('not-entered');
-      userEl.previousElementSibling.classList.remove('--not-entered');
-      const sentData = {
-        isLiked: userEl.dataset.isLiked === "true" ? true : false,
-        likes: userEl.dataset.likes,
-        postId: userEl.dataset.postId,
-        token: getToken(),
-        img: userEl.querySelector('img'),
+  for (let likeButton of document.querySelectorAll(".like-button")) {
+    likeButton.addEventListener("click", () => {
+      const isLiked = likeButton.dataset.isLiked === "true" ? true : false;
+      const postId = likeButton.dataset.postId;
+      console.log(isLiked)
+      if (isLiked) {
+        goToPage(LOADING_PAGE);
+        dislikeApi({ postId: postId, token: getToken() })
+          .then(() => {
+            goToPage(POSTS_PAGE);
+          })
+          .catch(() => {
+            goToPage(POSTS_PAGE);
+          });
+      } else {
+        goToPage(LOADING_PAGE);
+        likeApi({ postId: postId, token: getToken() })
+          .then(() => {
+            goToPage(POSTS_PAGE);
+          })
+          .catch(() => {
+            goToPage(POSTS_PAGE);
+          });
       }
-
     });
   }
+  
+
+//   for (let userEl of document.querySelectorAll(".like-button")) {
+//     userEl.addEventListener("click", () => {
+//       userEl.classList.add('not-entered');
+//       userEl.previousElementSibling.classList.remove('--not-entered');
+//       const sentData = {
+//         isLiked: userEl.dataset.isLiked === "true" ? true : false,
+//         likes: userEl.dataset.likes,
+//         postId: userEl.dataset.postId,
+//         token: getToken(),
+//         img: userEl.querySelector('img'),
+//       }
+//       // (sentData);
+//     });
+//   }
 }
 // export function renderPostsPageComponent({ appEl }) {
 //   // TODO: реализовать рендер постов из api

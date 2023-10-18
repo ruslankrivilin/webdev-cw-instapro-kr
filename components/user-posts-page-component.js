@@ -73,10 +73,10 @@ export function renderUserPostsPageComponent({ appEl }) {
     });
   }
   
-  for (let userEl of document.querySelectorAll(".like-button")) {
-    userEl.addEventListener("click", () => {
-      const isLiked = userEl.dataset.isLiked === "true" ? true : false;
-      const postId = userEl.dataset.postId;
+  for (let likeButton of document.querySelectorAll(".like-button")) {
+    likeButton.addEventListener("click", () => {
+      const isLiked = likeButton.dataset.isLiked === "true" ? true : false;
+      const postId = likeButton.dataset.postId;
       if (isLiked) {
         goToPage(LOADING_PAGE);
         dislikeApi({ postId: postId, token: getToken() })

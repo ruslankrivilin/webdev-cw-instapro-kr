@@ -22,6 +22,9 @@ import { formatDistanceToNow } from "date-fns";
 export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
+export const setPosts = (newPosts) => {
+  posts = newPosts;
+}
 
 export const changeLocalPosts = (newPosts) => {
   posts = newPosts;

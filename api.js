@@ -100,12 +100,13 @@ export const likeApi = ({ postId, token }) => {
       }
     })
     .then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      } else {
-        throw Error('Лайк не поставлен')
+      if (response.status === 401) {
+        alert('Лайкать посты могут только авторизованные пользователи');
+        throw new Error("Нет авторизации");
       }
-    });
+
+      return response.json();
+    })
 };
 
 export const dislikeApi = ({ postId, token }) => {
@@ -117,13 +118,15 @@ export const dislikeApi = ({ postId, token }) => {
       }
     })
     .then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      } else {
-        throw Error('Лайк не поставлен')
+      if (response.status === 401) {
+        alert('Лайкать посты могут только авторизованные пользователи');
+        throw new Error("Нет авторизации");
       }
-    });
+
+      return response.json();
+    })
 };
+
 // Загружает картинку в облако, возвращает url загруженной картинки
 export function uploadImage({ file }) {
   const data = new FormData();
